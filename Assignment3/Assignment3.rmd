@@ -26,6 +26,8 @@ UniversalBank$CreditCard <- factor(UniversalBank$CreditCard)
 df= UniversalBank
 
 #TASK1
+#Create a pivot table for the training data with Online as a column variable, CC as a row 
+#variable, and Loan as a secondary row variable.
 set.seed(64060)
 Train_index <- createDataPartition(df$Personal.Loan, p = 0.6, list = FALSE)
 train.df = df[Train_index,]
@@ -37,11 +39,20 @@ ftable(mytable)
 
 #TASK2
 
+#Consider the task of classifying a customer who owns a bank credit card and is actively using 
+#online banking services. Looking at the pivot table, what is the probability that this customer 
+#will accept the loan offer? [This is the probability of loan acceptance (Loan = 1) conditional on 
+#having a bank credit card (CC = 1) and being an active user of online 
+#banking services (Online = 1)].
+
 probability = 59/(59+479)
 probability
 
 
 #TASK3
+
+#Create two separate pivot tables for the training data. One will have Loan (rows) as a 
+#function of Online (columns) and the other will have Loan (rows) as a function of CC.
 
 table(Personal.Loan = train.df$Personal.Loan, Online = train.df$Online)
 
@@ -49,6 +60,8 @@ table(Personal.Loan = train.df$Personal.Loan, CreditCard = train.df$CreditCard)
 table(Personal.Loan = train.df$Personal.Loan)
 
 #TASK4
+
+#Compute the following quantities [P(A | B) means “the probability of A given B”]: 
 
 #i. P(CC = 1 | Loan = 1) (the proportion of credit card holders among the loan 
 #acceptors) 
@@ -75,6 +88,10 @@ Probablity6 <- 2712/(2712+288)
 Probablity6
 
 #TASK5
+
+#Use the quantities computed above to compute the naive Bayes probability P(Loan = 1 | CC 
+#= 1, Online = 1).
+
 
 Task5Probablity <- (Probablity1*Probablity2*Probablity3)/
 ((Probablity1*Probablity2*Probablity3) +(Probablity4*Probablity5*Probablity6))
