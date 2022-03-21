@@ -120,7 +120,7 @@ clusplot(Pharma_data2,fit$cluster,color = TRUE,shade = TRUE,labels = 2,lines = 0
 
 #Cluster 1: Hold cluster -They have decent numbers.
 #Cluster 2: Moderate Buy (or) Hold cluster.
-#Cluster 3: Hold Cluster,Low Beta, market recommendations are very High 
+#Cluster 3: Buy or Sell Cluster
 #Cluster 4: Buy Cluster - It has good stability.
 #Cluster 5: High Hold cluster
 
