@@ -1,0 +1,149 @@
+---
+title: "Assignment-5"
+author: "Priyanka Chillakuru"
+date: "4/17/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+#Importing the required libraries
+```{r}
+library(cluster)
+library(caret)
+library(dendextend)
+library(knitr)
+library(factoextra)
+library(readr)
+
+```
+
+#Importing the cereals dataset
+
+```{r}
+Cereals_Data<- read.csv("C:/Users/cpriy/Downloads/Cereals.csv")
+data.frame <- data.frame(Cereals_Data[,4:16])
+
+```
+
+#Removing the missing values from the data
+
+```{r}
+Missingvalue <- na.omit(data.frame)
+
+```
+
+#Data normalization and data scaling
+
+```{r}
+Normalize <- scale(Missingvalue)
+
+```
+#using the euclidean distance to measure the distance
+```{r}
+d <- dist(Normalize, method = "euclidean")
+#perform hierarchical clustering using complete linkage.
+Hc <- hclust(d, method = "complete")
+plot(Hc)
+
+```
+
+#dendogram
+```{r}
+round(Hc$height, 3)
+
+```
+
+#Determining Optimal clusters: highliting the clusters in dendogram directly
+```{r}
+plot(Hc)
+rect.hclust(Hc,k = 4, border = "orange")
+
+```
+#Using agnes() function to perform clustering. clustering using agnes() with single, complete,
+#average and ward.
+```{r}
+Hcsingle <- agnes(Normalize, method = "single")
+Hccomplete <-agnes(Normalize, method = "complete")
+Hcaverage <-agnes(Normalize, method = "average")
+Hcward <- agnes(Normalize, method = "ward")
+
+```
+
+#Compare the agglomerative coefficients for single,complete,average and ward.
+
+```{r}
+print(Hcsingle$ac)
+print(Hccomplete$ac)
+print(Hcaverage$ac)
+print(Hcward$ac)
+
+```
+
+From the above output the best value we got is 0.904. Ploting the agnes using ward method and cuttung the
+Dendrogram. we will take k =4 by noticing the distance
+
+```{r}
+pltree(Hcward, cex = 0.6, hand = -1, main = "Dendrogram of agnes ward")
+
+```
+
+#cal clustering using ward method.
+
+```{r}
+hc1 <- hclust(d, method = "ward.D2")
+subgroup <- cutree(hc1, k =4)
+table(subgroup)
+
+```
+
+```{r}
+datafram <- as.data.frame(cbind(Normalize,subgroup))
+
+```
+#the results in scatter plot.
+```{r}
+fviz_cluster(list(data = Normalize,cluster=subgroup))
+
+```
+
+```{r}
+datacereals <-Cereals_Data
+datacereals.omi <- na.omit(datacereals)
+clust <- cbind(datacereals.omi, subgroup)
+clust[clust$subgroup==1,]
+clust[clust$subgroup==2,]
+clust[clust$subgroup==3,]
+clust[clust$subgroup==4,]
+
+
+```
+#calculating the mean ratings to determine the cluster cereals
+
+```{r}
+mean(clust[clust$subgroup==1,"rating"])
+mean(clust[clust$subgroup==2,"rating"])
+mean(clust[clust$subgroup==3,"rating"])
+mean(clust[clust$subgroup==4,"rating"])
+
+```
+
+From the above results we can clearly that the mean rating is high for subgroup 1.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
